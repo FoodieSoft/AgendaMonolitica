@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import java.awt.Toolkit;
 
 public class AgendaMonolitica extends JFrame {
 
@@ -41,6 +42,7 @@ public class AgendaMonolitica extends JFrame {
 	 * Create the frame.
 	 */
 	public AgendaMonolitica() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AgendaMonolitica.class.getResource("/com/sun/javafx/scene/control/skin/caspian/dialog-more-details.png")));
 		setTitle("Agenda Monolitica");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
