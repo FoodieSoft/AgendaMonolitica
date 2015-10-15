@@ -87,6 +87,3 @@ public class AgendaMonolitica extends JFrame {
 		}
 	}
 }
-// Esto no esta muy bien que digamos
-// esto es la segunda prueba
-//yyeye
