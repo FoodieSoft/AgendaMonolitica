@@ -1,6 +1,6 @@
 package persistencia;
 import java.sql.*;
-
+import java.util.Vector;
 
 public class Agente {
 
@@ -10,7 +10,7 @@ public class Agente {
     //Conexion con la base de datos
     protected static Connection mBD;
     
-    //Nombre del identificador de la base de datos (:agendaMono)
+    //Nombre del identificador de la base de datos (agendaMono)
     private static String url="jdbc:mysql://localhost/agendaMono"; 			
     
 	// Driver para conectar con bases de datos MySQL
@@ -33,14 +33,20 @@ public class Agente {
 	// Metodo para realizar la conexion a la base de datos
 	private static void conectar() throws Exception {
 		try {
+			
+			//Inicializacion de driver
 			Class.forName(driver);
+			
 		} catch (Exception e) {
-			System.out.println("ERROR DE PUENTE: " + e.toString());
+			System.out.println("Error al inicializar el driver: " + e.toString());
 		}
 		try {
-			mBD = DriverManager.getConnection(url);
+			
+			//Conectamos a la BBDD con un usuario y una password
+			mBD = DriverManager.getConnection(url,"root","iso2");
+			
 		} catch (Exception e) {
-			System.out.println("No se ha podido establecer conexion");
+			System.out.println("No se ha podido establecer conexion con la base de datos");
 		}
 	}
 
@@ -68,7 +74,7 @@ public class Agente {
 		return res;
 	}
 
-	// Metodo para realizar una eliminacion en la base de datos
+	// Metodo para realizar una actualizacion en la base de datos
 	public int update(String SQL) throws SQLException, Exception {
 		conectar();
 		PreparedStatement stmt = mBD.prepareStatement(SQL);
@@ -77,44 +83,25 @@ public class Agente {
 		desconectar();
 		return res;
 	}
-
-	public Vector<Object> select(String SQL) throws SQLException, Exception {
-
+	
+	public Vector<Object> select(String SQL) throws SQLException, Exception{
+		
 		conectar();
-		PreparedStatement stmt = mBD.prepareStatement(SQL);
-
-		Vector<Object> res = new Vector<Object>(); // Lo vamos a devolver como
-													// resultado, almacena los
-													// usuarios en un vector.
-		Vector<Object> campos = new Vector<Object>(); // Este vector es
-														// auxiliar, lo
-														// agregaremos al otro
-														// vector res. Almacena
-														// el campo login y
-														// password, que denota
-														// un usuario.
-		ResultSet auxiliar = stmt.executeQuery(); // Nos ayudara a introducir
-													// los datos de la base de
-													// datos en el vector
-													// campos.
-
-		while (auxiliar.next()) {
-			campos.add(auxiliar.getObject("login"));
-			campos.add(auxiliar.getObject("password"));
-			res.add(campos); // Adherimos la matriz auxiliar a la que vamos a
-								// devolver.
-		}
-
-		stmt.close();
+		PreparedStatement select =	mBD.prepareStatement(SQL);
+		ResultSet s = select.executeQuery();
+		
+	    Vector<Object> v=new Vector<Object>();
+	    Vector<Object> aux;
+				while (s.next()) {
+					aux=new Vector<Object>();
+					//Cojemos los datos a comparar
+					aux.add((String)s.getString("login"));
+					aux.add((String)s.getString("password"));
+					v.add((Vector)aux);
+				}	
+				
 		desconectar();
-
-		return res;
-
-		/*
-		 * Metodo para realizar una busqueda o seleccion de informacion enla
-		 * base de datos El método select develve un vector de vectores, donde
-		 * cada uno de los vectores que contiene el vector principal representa
-		 * los registros que se recuperan de la base de datos.
-		 */
+    	return v;
 	}
+
 }
