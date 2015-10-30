@@ -48,7 +48,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class GestorUsuario extends JFrame {
+public class InterfazUsuario extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panel;
@@ -79,7 +79,7 @@ public class GestorUsuario extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GestorUsuario frame = new GestorUsuario();
+					InterfazUsuario frame = new InterfazUsuario();
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
 
@@ -93,10 +93,10 @@ public class GestorUsuario extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public GestorUsuario() {
+	public InterfazUsuario() {
 		addWindowListener(new ThisWindowListener());
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(GestorUsuario.class.getResource("/com/sun/javafx/scene/control/skin/caspian/dialog-more-details.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(InterfazUsuario.class.getResource("/com/sun/javafx/scene/control/skin/caspian/dialog-more-details.png")));
 		setTitle("Agenda");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 735, 535);

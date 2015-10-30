@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,9 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
 import dominio.Usuario;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
@@ -91,22 +88,12 @@ public class Login extends JFrame {
 					} else {
 						if (String.valueOf(tftContrasena.getPassword()).toString().equals(password)) {
 							
-
-							
-							
 							Usuario usuario= new Usuario(lblUsuario.getText(),lblContrasena.getText());
-							
-							try{
-								//Miramos si podemos acceder al gestor mirando en la tabla usuarios
-								
-							}catch(Exception e){
-								
-							}
-							
+														
 							lblInfo.setText("Dentro");
 							lblInfo.setBackground(Color.GREEN);
 							//Creamos otra ventana con el gestor
-							GestorUsuario gestor = new GestorUsuario();
+							InterfazUsuario gestor = new InterfazUsuario();
 							gestor.setVisible(true);
 							gestor.setLocationRelativeTo(null);
 											
