@@ -10,7 +10,7 @@ public class GestorUsuario {
 	private Collection listaUsuarios;
 	private Usuario usuario;
 	public GestorUsuario(){
-		listaUsuarios= new Collection();
+		//listaUsuarios= new Collection();
 	}
 	
 	public Collection GetLista(){
