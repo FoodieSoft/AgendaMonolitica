@@ -33,7 +33,7 @@ public class Agente {
 	// Metodo para realizar la conexion a la base de datos
 	private static void conectar() throws Exception {
 		try {
-			
+
 			// Inicializacion de driver
 			Class.forName("com.mysql.jdbc.Driver");
 
@@ -43,14 +43,14 @@ public class Agente {
 		try {
 
 			// Conectamos a la BBDD con un usuario y una password
-			mBD = DriverManager.getConnection(url,"root" ,"iso2");
-			 
+			mBD = DriverManager.getConnection(url, "root", "iso2");
+
 		} catch (SQLException ex) {
-		    // handle any errors
-		    System.out.println("SQLException: " + ex.getMessage());
-		    System.out.println("SQLState: " + ex.getSQLState());
-		    System.out.println("VendorError: " + ex.getErrorCode());
-		    System.out.println("Causa: "+ex.getCause());
+			// handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			System.out.println("Causa: " + ex.getCause());
 		}
 	}
 
@@ -69,11 +69,11 @@ public class Agente {
 		return res;
 	}
 
+	// Metodo para retomar datos de la base de datos
 	public ResultSet leerSentencia(String SQL) throws SQLException, Exception {
-
 		conectar();
 		Statement select = mBD.createStatement();
-		ResultSet s = (ResultSet) select.executeQuery(SQL);
+		ResultSet s = select.executeQuery(SQL);
 		select.close();
 		desconectar();
 		return s;

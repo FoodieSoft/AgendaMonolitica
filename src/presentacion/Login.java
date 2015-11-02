@@ -82,7 +82,8 @@ public class Login extends JFrame {
 
 				public void actionPerformed(ActionEvent arg0) {
 
-					// Comprobamos que los campos id y contraseña no esten vacios
+					// Comprobamos que los campos id y contraseña no esten
+					// vacios
 					if (String.valueOf(tftContrasena.getPassword()).isEmpty() || tftUsuario.getText().isEmpty()) {
 						lblInfo.setText("Introduccir usuario y contraseña");
 						lblInfo.setBackground(Color.RED);
@@ -113,7 +114,7 @@ public class Login extends JFrame {
 							}
 
 						} catch (Exception e) {
-							lblInfo.setText("novaa");
+							lblInfo.setText(e.toString());
 							lblInfo.setBackground(Color.RED);
 						}
 
