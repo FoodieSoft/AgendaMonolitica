@@ -11,7 +11,7 @@ public class Agente {
 	protected static Connection mBD;
 
 	// Nombre del identificador de la base de datos (agendamonolitica)
-	private static String url = "jdbc:mysql://localhost/agendamonolitica?";
+	private static String url = "jdbc:mysql://localhost/agendamonolitica";
 
 	// Driver para conectar con bases de datos MySQL
 	private static String driver = "com.mysql.jdbc.Driver";
@@ -33,7 +33,7 @@ public class Agente {
 	// Metodo para realizar la conexion a la base de datos
 	private static void conectar() throws Exception {
 		try {
-
+			
 			// Inicializacion de driver
 			Class.forName("com.mysql.jdbc.Driver");
 
@@ -44,8 +44,6 @@ public class Agente {
 
 			// Conectamos a la BBDD con un usuario y una password
 			mBD = DriverManager.getConnection(url,"root" ,"iso2");
-			 if (mBD != null)
-			System.out.println("conectados");
 			 
 		} catch (SQLException ex) {
 		    // handle any errors
