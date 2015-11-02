@@ -1,4 +1,5 @@
 package presentacion;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
@@ -20,6 +21,7 @@ import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
+@SuppressWarnings("serial")
 public class Login extends JFrame {
 
 	private static Login frame = new Login();
@@ -30,11 +32,9 @@ public class Login extends JFrame {
 	private JLabel lblUsuario;
 	private JLabel lblContrasena;
 	private JPasswordField tftContrasena;
-	private final String password = "iso";
 	private JLabel lblInfo;
 	private JLabel lblLogo;
- 
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -49,8 +49,7 @@ public class Login extends JFrame {
 				}
 			}
 		});
-		
-		
+
 	}
 
 	/**
@@ -60,7 +59,7 @@ public class Login extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
 				Login.class.getResource("/com/sun/javafx/scene/control/skin/caspian/dialog-more-details.png")));
-		setTitle("Login");
+		setTitle("Agenda - Login");
 		setResizable(false);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -80,31 +79,44 @@ public class Login extends JFrame {
 			btnAceptar = new JButton("Aceptar");
 			btnAceptar.setToolTipText("Acceder a la agenda");
 			btnAceptar.addActionListener(new ActionListener() {
+
 				public void actionPerformed(ActionEvent arg0) {
+
+					// Comprobamos que los campos id y contraseña no esten vacios
 					if (String.valueOf(tftContrasena.getPassword()).isEmpty() || tftUsuario.getText().isEmpty()) {
 						lblInfo.setText("Introduccir usuario y contraseña");
 						lblInfo.setBackground(Color.RED);
-						
+
 					} else {
-						if (String.valueOf(tftContrasena.getPassword()).toString().equals(password)) {
-							
-							Usuario usuario= new Usuario(lblUsuario.getText(),lblContrasena.getText());
-														
-							lblInfo.setText("Dentro");
-							lblInfo.setBackground(Color.GREEN);
-							//Creamos otra ventana con el gestor
-							InterfazUsuario gestor = new InterfazUsuario();
-							gestor.setVisible(true);
-							gestor.setLocationRelativeTo(null);
-											
-							//Cerramos el login
-							frame.dispose();
-																						
-						
-						} else {
-							lblInfo.setText("Contraseña incorrecta");
+
+						// Creamos un usuario con un nombre y una contraseña
+						Usuario usuario = new Usuario(tftUsuario.getText(), tftContrasena.getPassword().toString());
+
+						try {
+
+							// Leemos el usuario en la base de datos
+							if (usuario.autenticar() == true) {
+
+								// Creamos otra ventana con el gestor
+								InterfazUsuario gestor = new InterfazUsuario();
+								gestor.setVisible(true);
+								gestor.setLocationRelativeTo(null);
+
+								// Cerramos el login
+								frame.dispose();
+
+							} else {
+
+								lblInfo.setText("El usuario o la contraseña es incorrecta.");
+								lblInfo.setBackground(Color.RED);
+
+							}
+
+						} catch (Exception e) {
+							lblInfo.setText("novaa");
 							lblInfo.setBackground(Color.RED);
 						}
+
 					}
 				}
 			});
@@ -158,28 +170,31 @@ public class Login extends JFrame {
 
 	private class TftUsuarioActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
-			tftContrasena.enable();
 			tftContrasena.requestFocus();
 		}
 	}
+
 	private class TftUsuarioFocusListener extends FocusAdapter {
 		@Override
 		public void focusGained(FocusEvent e) {
-		tftUsuario.setBackground(new Color(250,250,210));
+			tftUsuario.setBackground(new Color(250, 250, 210));
 		}
+
 		@Override
 		public void focusLost(FocusEvent e) {
-		tftUsuario.setBackground(new Color(250,250,250));
+			tftUsuario.setBackground(new Color(250, 250, 250));
 		}
 	}
+
 	private class TftContrasenaFocusListener extends FocusAdapter {
 		@Override
 		public void focusGained(FocusEvent e) {
-		tftContrasena.setBackground(new Color(250,250,210));
+			tftContrasena.setBackground(new Color(250, 250, 210));
 		}
+
 		@Override
 		public void focusLost(FocusEvent e) {
-		tftContrasena.setBackground(new Color(250,250,250));
+			tftContrasena.setBackground(new Color(250, 250, 250));
 		}
 	}
 }

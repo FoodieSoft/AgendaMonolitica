@@ -7,7 +7,7 @@ public class Persona {
 	private String direccion;
 	private int telefono;
 	private String correoE;
-	
+
 	public Persona(String nombre, String apellidos, String direccion, int telefono, String correoE) {
 		super();
 		this.nombre = nombre;
@@ -56,5 +56,5 @@ public class Persona {
 	public void setCorreoE(String correoE) {
 		this.correoE = correoE;
 	}
-	
+
 }

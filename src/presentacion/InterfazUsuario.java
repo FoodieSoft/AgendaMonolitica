@@ -1,4 +1,5 @@
 package presentacion;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -70,7 +71,6 @@ public class InterfazUsuario extends JFrame {
 	private JButton btnEliminarContacto;
 	private JTable tablaContactos;
 	private JLabel lblAvisos;
-	private JMenuBar menuBar;
 
 	/**
 	 * Launch the application.
@@ -96,19 +96,15 @@ public class InterfazUsuario extends JFrame {
 	public InterfazUsuario() {
 		addWindowListener(new ThisWindowListener());
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(InterfazUsuario.class.getResource("/com/sun/javafx/scene/control/skin/caspian/dialog-more-details.png")));
-		setTitle("Agenda");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(InterfazUsuario.class
+				.getResource("/com/sun/javafx/scene/control/skin/caspian/dialog-more-details.png")));
+		setTitle("Agenda - Gestor contactos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 735, 535);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		{
-			menuBar = new JMenuBar();
-			menuBar.setBounds(0, 0, 729, 26);
-			contentPane.add(menuBar);
-		}
 		{
 			panel = new JPanel();
 			panel.setBounds(12, 29, 705, 458);
@@ -215,14 +211,13 @@ public class InterfazUsuario extends JFrame {
 				panel.add(panelTabla);
 				panelTabla.setLayout(new BorderLayout(0, 0));
 				{
-					String[] nombreColumnas = {"Nombre","Apellidos","Direccion","Correo","Telefono"};
-					 Object[][] data = {
-							 {"Cristian", "Trapero Mora",
-							 "Miguelturra", "critramo@gmail.com", "645123638"},
-							
-							 };
-					 
-					DefaultTableModel modeloTabla= new DefaultTableModel(nombreColumnas,0);					
+					String[] nombreColumnas = { "Nombre", "Apellidos", "Direccion", "Correo", "Telefono" };
+					Object[][] data = {
+							{ "Cristian", "Trapero Mora", "Miguelturra", "critramo@gmail.com", "645123638" },
+
+					};
+
+					DefaultTableModel modeloTabla = new DefaultTableModel(nombreColumnas, 0);
 					tablaContactos = new JTable(modeloTabla);
 					tablaContactos.setMinimumSize(new Dimension(200, 0));
 					tablaContactos.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -230,23 +225,23 @@ public class InterfazUsuario extends JFrame {
 					tablaContactos.addMouseListener(new TablaContactosMouseListener());
 					tablaContactos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 					tablaContactos.setFillsViewportHeight(true);
-					
-//					int[] anchos = {40, 200, 50,100,20};
-//					for(int i = 0; i < tablaContactos.getColumnCount(); i++) {
-//
-//						tablaContactos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
-//
-//						}
-					
-					for(int i=0; i<30; i++){
+
+					// int[] anchos = {40, 200, 50,100,20};
+					// for(int i = 0; i < tablaContactos.getColumnCount(); i++)
+					// {
+					//
+					// tablaContactos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+					//
+					// }
+
+					for (int i = 0; i < 30; i++) {
 						modeloTabla.addRow(data[0]);
 					}
-					
-					JScrollPane scrollPanel = new JScrollPane(tablaContactos,
-						    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-						    JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+					JScrollPane scrollPanel = new JScrollPane(tablaContactos, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+							JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 					panelTabla.add(scrollPanel, BorderLayout.CENTER);
-					
+
 				}
 			}
 			{
@@ -260,55 +255,60 @@ public class InterfazUsuario extends JFrame {
 			}
 		}
 	}
+
 	private class TablaContactosMouseListener extends MouseAdapter {
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			tftNombre.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(),0).toString());
-			tftApellidos.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(),1).toString());
-			tftDireccion.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(),2).toString());
-			tftCorreo.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(),3).toString());
-			tftTelefono.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(),4).toString());
-			
+			tftNombre.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 0).toString());
+			tftApellidos.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 1).toString());
+			tftDireccion.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 2).toString());
+			tftCorreo.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 3).toString());
+			tftTelefono.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 4).toString());
+
 		}
 	}
+
 	private class BtnAadirContactoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
-			if(tftNombre.getText().isEmpty() || tftApellidos.getText().isEmpty()){
+			if (tftNombre.getText().isEmpty() || tftApellidos.getText().isEmpty()) {
 				lblAvisos.setText("Debe de introducir un nombre y un apellido para el contacto");
 				lblAvisos.setBackground(Color.RED);
 
-			}else{
+			} else {
 				lblAvisos.setText("Contacto añadido");
 				lblAvisos.setBackground(Color.GREEN);
 			}
 		}
 	}
+
 	private class BtnModificarContactoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if(tftNombre.getText().isEmpty() || tftApellidos.getText().isEmpty()){
+			if (tftNombre.getText().isEmpty() || tftApellidos.getText().isEmpty()) {
 				lblAvisos.setText("Debe de introducir un nombre y un apellido para el contacto");
 				lblAvisos.setBackground(Color.RED);
 
-			}else{
+			} else {
 				lblAvisos.setText("Contacto modificado");
 				lblAvisos.setBackground(Color.GREEN);
 			}
-			
+
 		}
 	}
+
 	private class BtnEliminarContactoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if(tftNombre.getText().isEmpty() || tftApellidos.getText().isEmpty()){
+			if (tftNombre.getText().isEmpty() || tftApellidos.getText().isEmpty()) {
 				lblAvisos.setText("Debe de introducir un nombre y un apellido para el contacto");
 				lblAvisos.setBackground(Color.RED);
 
-			}else{
+			} else {
 				lblAvisos.setText("Contacto eliminado");
 				lblAvisos.setBackground(Color.GREEN);
 			}
-			
+
 		}
 	}
+
 	private class ThisWindowListener extends WindowAdapter {
 		@Override
 		public void windowClosing(WindowEvent arg0) {
@@ -317,54 +317,64 @@ public class InterfazUsuario extends JFrame {
 			frame.setLocationRelativeTo(null);
 		}
 	}
+
 	private class TftNombreFocusListener extends FocusAdapter {
 		@Override
 		public void focusGained(FocusEvent e) {
-		tftNombre.setBackground(new Color(250,250,210));
+			tftNombre.setBackground(new Color(250, 250, 210));
 		}
+
 		@Override
 		public void focusLost(FocusEvent e) {
-		tftNombre.setBackground(new Color(250,250,250));
+			tftNombre.setBackground(new Color(250, 250, 250));
 		}
 	}
+
 	private class TftApellidosFocusListener extends FocusAdapter {
 		@Override
 		public void focusGained(FocusEvent e) {
-		tftApellidos.setBackground(new Color(250,250,210));
+			tftApellidos.setBackground(new Color(250, 250, 210));
 		}
+
 		@Override
 		public void focusLost(FocusEvent e) {
-		tftApellidos.setBackground(new Color(250,250,250));
+			tftApellidos.setBackground(new Color(250, 250, 250));
 		}
 	}
+
 	private class TftDireccionFocusListener extends FocusAdapter {
 		@Override
 		public void focusGained(FocusEvent e) {
-		tftDireccion.setBackground(new Color(250,250,210));
+			tftDireccion.setBackground(new Color(250, 250, 210));
 		}
+
 		@Override
 		public void focusLost(FocusEvent e) {
-		tftDireccion.setBackground(new Color(250,250,250));
+			tftDireccion.setBackground(new Color(250, 250, 250));
 		}
 	}
+
 	private class TftCorreoFocusListener extends FocusAdapter {
 		@Override
 		public void focusGained(FocusEvent e) {
-		tftCorreo.setBackground(new Color(250,250,210));
+			tftCorreo.setBackground(new Color(250, 250, 210));
 		}
+
 		@Override
 		public void focusLost(FocusEvent e) {
-		tftCorreo.setBackground(new Color(250,250,250));
+			tftCorreo.setBackground(new Color(250, 250, 250));
 		}
 	}
+
 	private class TftTelefonoFocusListener extends FocusAdapter {
 		@Override
 		public void focusGained(FocusEvent e) {
-		tftTelefono.setBackground(new Color(250,250,210));
+			tftTelefono.setBackground(new Color(250, 250, 210));
 		}
+
 		@Override
 		public void focusLost(FocusEvent e) {
-		tftTelefono.setBackground(new Color(250,250,250));
+			tftTelefono.setBackground(new Color(250, 250, 250));
 		}
 	}
 }

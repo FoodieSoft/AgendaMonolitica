@@ -1,18 +1,18 @@
 package persistencia;
+
 import java.sql.*;
-import java.util.Vector;
 
 public class Agente {
 
-	//Instancia del agente
-    protected static Agente mInstancia=null;
-    
-    //Conexion con la base de datos
-    protected static Connection mBD;
-    
-    //Nombre del identificador de la base de datos (agendaMono)
-    private static String url="jdbc:mysql://localhost/agendaMono"; 			
-    
+	// Instancia del agente
+	protected static Agente mInstancia = null;
+
+	// Conexion con la base de datos
+	protected static Connection mBD;
+
+	// Nombre del identificador de la base de datos (agendamonolitica)
+	private static String url = "jdbc:mysql://localhost/agendamonolitica?";
+
 	// Driver para conectar con bases de datos MySQL
 	private static String driver = "com.mysql.jdbc.Driver";
 
@@ -20,7 +20,7 @@ public class Agente {
 	private Agente() throws Exception {
 		conectar();
 	}
-	
+
 	// Implementacion del patron singleton
 	// http://es.wikipedia.org/wiki/Singleton
 	public static Agente getAgente() throws Exception {
@@ -33,45 +33,32 @@ public class Agente {
 	// Metodo para realizar la conexion a la base de datos
 	private static void conectar() throws Exception {
 		try {
-			
-			//Inicializacion de driver
-			Class.forName(driver);
-			
+
+			// Inicializacion de driver
+			Class.forName("com.mysql.jdbc.Driver");
+
 		} catch (Exception e) {
 			System.out.println("Error al inicializar el driver: " + e.toString());
 		}
 		try {
-			
-			//Conectamos a la BBDD con un usuario y una password
-			mBD = DriverManager.getConnection(url,"root","iso2");
-			
-		} catch (Exception e) {
-			System.out.println("No se ha podido establecer conexion con la base de datos");
+
+			// Conectamos a la BBDD con un usuario y una password
+			mBD = DriverManager.getConnection(url,"root" ,"iso2");
+			 if (mBD != null)
+			System.out.println("conectados");
+			 
+		} catch (SQLException ex) {
+		    // handle any errors
+		    System.out.println("SQLException: " + ex.getMessage());
+		    System.out.println("SQLState: " + ex.getSQLState());
+		    System.out.println("VendorError: " + ex.getErrorCode());
+		    System.out.println("Causa: "+ex.getCause());
 		}
 	}
 
 	// Metodo para desconectar de la base de datos
 	public void desconectar() throws Exception {
 		mBD.close();
-	}
-
-	// Metodo para realizar una insercion en la base de datos
-	public int insert(String SQL) throws SQLException, Exception {
-		conectar();
-		PreparedStatement stmt = mBD.prepareStatement(SQL);
-		int res = stmt.executeUpdate();
-		stmt.close();
-		desconectar();
-		return res;
-	}
-
-	// Metodo para realizar una eliminacion en la base de datos
-	public int delete(String SQL) throws SQLException, Exception {
-		PreparedStatement stmt = mBD.prepareStatement(SQL);
-		int res = stmt.executeUpdate();
-		stmt.close();
-		desconectar();
-		return res;
 	}
 
 	// Metodo para realizar una actualizacion en la base de datos
@@ -83,25 +70,16 @@ public class Agente {
 		desconectar();
 		return res;
 	}
-	
-	public Vector<Object> select(String SQL) throws SQLException, Exception{
-		
+
+	public ResultSet leerSentencia(String SQL) throws SQLException, Exception {
+
 		conectar();
-		PreparedStatement select =	mBD.prepareStatement(SQL);
-		ResultSet s = select.executeQuery();
-		
-	    Vector<Object> v=new Vector<Object>();
-	    Vector<Object> aux;
-				while (s.next()) {
-					aux=new Vector<Object>();
-					//Cojemos los datos a comparar
-					aux.add((String)s.getString("login"));
-					aux.add((String)s.getString("password"));
-					v.add((Vector)aux);
-				}	
-				
+		Statement select = mBD.createStatement();
+		ResultSet s = (ResultSet) select.executeQuery(SQL);
+		select.close();
 		desconectar();
-    	return v;
+		return s;
+
 	}
 
 }
