@@ -41,6 +41,6 @@ public class Usuario {
 		Password = password;
 	}
 	public void actualizar(){
-		gestor.
+		
 	}
 }
