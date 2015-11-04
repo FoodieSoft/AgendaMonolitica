@@ -86,15 +86,15 @@ public class Agente {
 		desconectar();
 		return contacto;
 	}
-	
+
 	public Vector<Object> leerSentenciaContactos(String SQL) throws SQLException, Exception {
 		conectar();
 
 		Statement select = mBD.createStatement();
 		ResultSet s = select.executeQuery(SQL);
-		
-		Vector<Object> contactos =  new Vector<Object>();
-		
+
+		Vector<Object> contactos = new Vector<Object>();
+
 		while (s.next()) {
 			Vector<Object> contacto = new Vector<Object>();
 			contacto.add(s.getString(1));
@@ -109,7 +109,7 @@ public class Agente {
 
 		select.close();
 		desconectar();
-		
+
 		return contactos;
 	}
 

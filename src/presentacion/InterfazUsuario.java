@@ -10,6 +10,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import dominio.Contacto;
+
 import java.awt.Toolkit;
 import javax.swing.BoxLayout;
 import javax.swing.JList;
@@ -82,7 +84,7 @@ public class InterfazUsuario extends JFrame {
 					InterfazUsuario frame = new InterfazUsuario();
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -233,6 +235,10 @@ public class InterfazUsuario extends JFrame {
 					// tablaContactos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
 					//
 					// }
+					
+					//Cargamos los datos de los contactos
+					Contacto contacto=null;
+					Vector<Object> contactos=contacto
 
 					JScrollPane scrollPanel = new JScrollPane(tablaContactos, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 							JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);

@@ -19,7 +19,7 @@ public class GestorUsuario {
 		if (aux.size() != 0) {
 			usuario = new Usuario(aux.elementAt(0).toString(), aux.elementAt(1).toString());
 		}
-		
+
 		return usuario;
 	}
 }

@@ -16,6 +16,8 @@ public class Contacto {
 		this.telefono = telefono;
 		this.correoE = correoE;
 	}
+	
+	
 
 	public String getNombre() {
 		return nombre;
