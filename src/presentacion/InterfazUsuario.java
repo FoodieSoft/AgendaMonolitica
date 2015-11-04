@@ -238,7 +238,6 @@ public class InterfazUsuario extends JFrame {
 					
 					//Cargamos los datos de los contactos
 					Contacto contacto=null;
-					Vector<Object> contactos=contacto
 
 					JScrollPane scrollPanel = new JScrollPane(tablaContactos, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 							JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);

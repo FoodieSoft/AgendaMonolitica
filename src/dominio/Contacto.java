@@ -1,5 +1,9 @@
 package dominio;
 
+import java.util.Vector;
+
+import persistencia.GestorContacto;
+
 public class Contacto {
 
 	private String nombre;
@@ -7,6 +11,7 @@ public class Contacto {
 	private String direccion;
 	private int telefono;
 	private String correoE;
+	private GestorContacto gestorContacto;
 
 	public Contacto(String nombre, String apellidos, String direccion, int telefono, String correoE) {
 		super();
@@ -16,8 +21,24 @@ public class Contacto {
 		this.telefono = telefono;
 		this.correoE = correoE;
 	}
-	
-	
+
+	public Vector<Object> leerContacto() throws Exception {
+		Vector<Object> persona=gestorContacto.leer(nombre, apellidos, direccion, telefono, correoE);
+		return persona;
+	}
+
+	public int borrarContacto() {
+		int i=gestorContacto.delete(persona)
+
+	}
+
+	public int modificarContacto() {
+
+	}
+
+	public int eliminarContacto() {
+
+	}
 
 	public String getNombre() {
 		return nombre;
