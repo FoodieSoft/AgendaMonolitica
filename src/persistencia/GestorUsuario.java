@@ -14,14 +14,10 @@ public class GestorUsuario {
 
 		Usuario usuario = null;
 		Agente agente = Agente.getAgente();
-		String sentencia = "SELECT * FROM USUARIOS WHERE id_usuario='" + id + "' AND password='" + password + "';";
-		ResultSet resultado = agente.leerSentencia(sentencia);
-		Vector<Object> aux = null;
+		String sentencia = "SELECT * FROM foodiesoft.usuarios WHERE id_usuario='" + id + "' AND password='" + password
+				+ "';";
 
-		while (resultado.next()) {
-			aux.add(resultado.getObject("login"));
-			aux.add(resultado.getObject("password"));
-		}
+		Vector<Object> aux = agente.leerSentencia(sentencia);
 
 		if (aux.size() != 0) {
 			usuario = new Usuario(aux.elementAt(0).toString(), aux.elementAt(1).toString());

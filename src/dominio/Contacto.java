@@ -1,6 +1,6 @@
 package dominio;
 
-public class Persona {
+public class Contacto {
 
 	private String nombre;
 	private String apellidos;
@@ -8,7 +8,7 @@ public class Persona {
 	private int telefono;
 	private String correoE;
 
-	public Persona(String nombre, String apellidos, String direccion, int telefono, String correoE) {
+	public Contacto(String nombre, String apellidos, String direccion, int telefono, String correoE) {
 		super();
 		this.nombre = nombre;
 		this.apellidos = apellidos;

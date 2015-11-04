@@ -1,6 +1,7 @@
 package persistencia;
 
 import java.sql.*;
+import java.util.Vector;
 
 public class Agente {
 
@@ -11,13 +12,13 @@ public class Agente {
 	protected static Connection mBD;
 
 	// Nombre del identificador de la base de datos (agendamonolitica)
-	private static String url = "jdbc:mysql://localhost/agendamonolitica";
+	private static String url = "jdbc:mysql://localhost:3306/?user=root";
 
 	// Driver para conectar con bases de datos MySQL
 	private static String driver = "com.mysql.jdbc.Driver";
 
 	// Constructor
-	private Agente() throws Exception {
+	public Agente() throws Exception {
 		conectar();
 	}
 
@@ -43,7 +44,7 @@ public class Agente {
 		try {
 
 			// Conectamos a la BBDD con un usuario y una password
-			mBD = DriverManager.getConnection(url, "root", "iso2");
+			mBD = DriverManager.getConnection(url + "&password=iso2");
 
 		} catch (SQLException ex) {
 			// handle any errors
@@ -69,15 +70,43 @@ public class Agente {
 		return res;
 	}
 
-	// Metodo para retomar datos de la base de datos
-	public ResultSet leerSentencia(String SQL) throws SQLException, Exception {
+	public Vector<Object> leerSentencia(String SQL) throws SQLException, Exception {
 		conectar();
+
 		Statement select = mBD.createStatement();
 		ResultSet s = select.executeQuery(SQL);
+		Vector<Object> aux = new Vector<Object>();
+
+		while (s.next()) {
+			aux.add(s.getString(1));
+			aux.add(s.getString(2));
+		}
+
 		select.close();
 		desconectar();
-		return s;
+		return aux;
+	}
+	
+	public Vector<Object> leerSentenciaContanctos(String SQL) throws SQLException, Exception {
+		conectar();
 
+		Statement select = mBD.createStatement();
+		ResultSet s = select.executeQuery(SQL);
+		Vector<Object> aux = new Vector<Object>();
+
+		while (s.next()) {
+			aux.add(s.getString(1));
+			aux.add(s.getString(2));
+			aux.add(s.getString(3));
+			aux.add(s.getInt(4));
+			aux.add(s.getString(5));
+			aux.add(s.getString(6));
+			aux.add(s.getString(7));
+		}
+
+		select.close();
+		desconectar();
+		return aux;
 	}
 
 }

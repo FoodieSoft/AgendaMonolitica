@@ -91,7 +91,7 @@ public class Login extends JFrame {
 					} else {
 
 						// Creamos un usuario con un nombre y una contraseña
-						Usuario usuario = new Usuario(tftUsuario.getText(), tftContrasena.getPassword().toString());
+						Usuario usuario = new Usuario(tftUsuario.getText(), tftContrasena.getText());
 
 						try {
 
@@ -108,14 +108,15 @@ public class Login extends JFrame {
 
 							} else {
 
-								lblInfo.setText("El usuario o la contraseña es incorrecta.");
+								lblInfo.setText("Usuario o contraseña incorrecta.");
 								lblInfo.setBackground(Color.RED);
 
 							}
 
 						} catch (Exception e) {
-							lblInfo.setText(e.toString());
+							lblInfo.setText("Usuario o contraseña incorrecta.");
 							lblInfo.setBackground(Color.RED);
+							System.out.println(e.getMessage());
 						}
 
 					}

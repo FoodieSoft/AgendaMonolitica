@@ -82,7 +82,7 @@ public class InterfazUsuario extends JFrame {
 					InterfazUsuario frame = new InterfazUsuario();
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
-
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -233,10 +233,6 @@ public class InterfazUsuario extends JFrame {
 					// tablaContactos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
 					//
 					// }
-
-					for (int i = 0; i < 30; i++) {
-						modeloTabla.addRow(data[0]);
-					}
 
 					JScrollPane scrollPanel = new JScrollPane(tablaContactos, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 							JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
