@@ -1,6 +1,8 @@
 package persistencia;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.Vector;
+
 import dominio.Contacto;
 
 public class GestorContacto {
@@ -18,7 +20,7 @@ public class GestorContacto {
 	
 	public int insert(Contacto persona) throws SQLException, Exception{
 		int i;
-		i= Agente.getAgente().insert("");
+		i= Agente.getAgente().update("");
 		return i;
 	}
 	
@@ -30,8 +32,15 @@ public class GestorContacto {
 	
 	public int delete(Contacto persona) throws SQLException, Exception{
 		int i;
-		i= Agente.getAgente().delete("");
+		i= Agente.getAgente().update("");
 		return i;
+	}
+	
+	public Vector<Object> readAll(Contacto persona) throws SQLException, Exception{
+	
+		Vector<Object> contactos;
+		contactos= Agente.getAgente().leerSentenciaContactos("");
+		return contactos;
 	}
 
 }

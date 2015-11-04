@@ -75,38 +75,42 @@ public class Agente {
 
 		Statement select = mBD.createStatement();
 		ResultSet s = select.executeQuery(SQL);
-		Vector<Object> aux = new Vector<Object>();
+		Vector<Object> contacto = new Vector<Object>();
 
 		while (s.next()) {
-			aux.add(s.getString(1));
-			aux.add(s.getString(2));
+			contacto.add(s.getString(1));
+			contacto.add(s.getString(2));
 		}
 
 		select.close();
 		desconectar();
-		return aux;
+		return contacto;
 	}
 	
-	public Vector<Object> leerSentenciaContanctos(String SQL) throws SQLException, Exception {
+	public Vector<Object> leerSentenciaContactos(String SQL) throws SQLException, Exception {
 		conectar();
 
 		Statement select = mBD.createStatement();
 		ResultSet s = select.executeQuery(SQL);
-		Vector<Object> aux = new Vector<Object>();
-
+		
+		Vector<Object> contactos =  new Vector<Object>();
+		
 		while (s.next()) {
-			aux.add(s.getString(1));
-			aux.add(s.getString(2));
-			aux.add(s.getString(3));
-			aux.add(s.getInt(4));
-			aux.add(s.getString(5));
-			aux.add(s.getString(6));
-			aux.add(s.getString(7));
+			Vector<Object> contacto = new Vector<Object>();
+			contacto.add(s.getString(1));
+			contacto.add(s.getString(2));
+			contacto.add(s.getString(3));
+			contacto.add(s.getInt(4));
+			contacto.add(s.getString(5));
+			contacto.add(s.getString(6));
+			contacto.add(s.getString(7));
+			contactos.add(contacto);
 		}
 
 		select.close();
 		desconectar();
-		return aux;
+		
+		return contactos;
 	}
 
 }
