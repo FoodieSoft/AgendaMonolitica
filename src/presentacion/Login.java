@@ -102,7 +102,8 @@ public class Login extends JFrame {
 								InterfazUsuario gestor = new InterfazUsuario();
 								gestor.setVisible(true);
 								gestor.setLocationRelativeTo(null);
-
+								gestor.usuario=usuario;
+								
 								// Cerramos el login
 								frame.dispose();
 

@@ -33,12 +33,7 @@ public class Contacto {
 		this.gestorContacto= new GestorContacto();
 	}
 
-	// public Vector<Object> leerContacto() throws Exception {
-	// Vector<Object> persona = gestorContacto.leer(nombre, apellidos,
-	// direccion, telefono, correoE);
-	// return persona;
-	// }
-
+	
 	// public int borrarContacto() {
 	// int i=gestorContacto.delete(nombre,apellidos);
 	//
@@ -52,11 +47,19 @@ public class Contacto {
 	//
 	// }
 
+	public boolean insertarContacto(String nombre,String apellidos,String direccion, int telefono,String correoE,Usuario usuario) throws SQLException, Exception{
+		boolean insertado=false;
+		if(gestorContacto.insert(nombre,apellidos,direccion, telefono, correoE,usuario)!=0){
+			insertado=true;
+		}
+		return insertado;
+	}
 	public Vector<Contacto> leerContactos() throws SQLException, Exception {
 		Vector<Contacto> contactos = gestorContacto.readAll();
 
 		return contactos;
 	}
+	
 
 	public String getNombre() {
 		return nombre;

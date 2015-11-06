@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Vector;
 
 import dominio.Contacto;
+import dominio.Usuario;
 
 public class GestorContacto {
 	Agente agente;
@@ -23,9 +24,20 @@ public class GestorContacto {
 	// return contactos;
 	// }
 
-	public int insert(Contacto persona) throws SQLException, Exception {
+	public int insert(String nombre,String apellidos,String direccion, int telefono,String correoE, Usuario usuario) throws SQLException, Exception {
 		int i;
-		String sentencia = "";
+		if(direccion==""){
+			direccion=null;
+		}
+//		if(telefono==' '){
+//			telefono=00000;
+//		}
+		if(correoE==""){
+			correoE=null;
+		}
+String sentencia = 
+		"INSERT INTO foodiesoft.CONTACTOS(nombre,apellidos,direccion,telefono,correo,codigo) VALUES('"+nombre+"','"+apellidos+"','"+direccion+"',"+telefono+",'"+correoE+"','"+usuario.getid()+"');";
+		
 		i = Agente.getAgente().update(sentencia);
 		return i;
 	}

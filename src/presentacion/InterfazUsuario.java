@@ -9,6 +9,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import dominio.Contacto;
+import dominio.Usuario;
+
 import java.awt.Toolkit;
 import javax.swing.BoxLayout;
 import javax.swing.JList;
@@ -48,6 +50,8 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class InterfazUsuario extends JFrame {
 
@@ -72,7 +76,8 @@ public class InterfazUsuario extends JFrame {
 	private JTable tablaContactos;
 	private JLabel lblAvisos;
 	private JButton btnBuscarContacto;
-
+	public Usuario usuario;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -220,22 +225,7 @@ public class InterfazUsuario extends JFrame {
 				panel.add(panelTabla);
 				panelTabla.setLayout(new BorderLayout(0, 0));
 				{
-					String[] nombreColumnas = { "Nombre", "Apellidos", "Direccion", "Correo", "Telefono" };
-
-					DefaultTableModel modeloTabla = new DefaultTableModel(nombreColumnas, 0);
-					tablaContactos = new JTable(modeloTabla);
-					tablaContactos.setColumnSelectionAllowed(true);
-					tablaContactos.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-					tablaContactos.setMinimumSize(new Dimension(300, 0));
-					tablaContactos.setAlignmentY(Component.TOP_ALIGNMENT);
-					tablaContactos.setAlignmentX(Component.LEFT_ALIGNMENT);
-					tablaContactos.addMouseListener(new TablaContactosMouseListener());
-					tablaContactos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-					tablaContactos.setFillsViewportHeight(true);
-
-					JScrollPane scrollPanel = new JScrollPane(tablaContactos, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-							JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-					panelTabla.add(scrollPanel, BorderLayout.CENTER);
+					actualizarTabla();
 
 				}
 			}
@@ -254,14 +244,17 @@ public class InterfazUsuario extends JFrame {
 	private class TablaContactosMouseListener extends MouseAdapter {
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
+			
 			try {
+
+				limpiarCampos();
 				tftNombre.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 0).toString());
 				tftApellidos.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 1).toString());
 				tftDireccion.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 2).toString());
 				tftCorreo.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 3).toString());
 				tftTelefono.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 4).toString());
 			} catch (Exception e) {
-				System.out.println(e.toString());
+				//System.out.println("nova"+e.toString());
 			}
 		}
 	}
@@ -273,8 +266,20 @@ public class InterfazUsuario extends JFrame {
 				lblAvisos.setBackground(Color.RED);
 
 			} else {
-				lblAvisos.setText("Contacto añadido");
-				lblAvisos.setBackground(Color.GREEN);
+				Contacto contacto=new Contacto();
+				try {
+					if(contacto.insertarContacto(tftNombre.getText(),tftApellidos.getText(),tftDireccion.getText(),Integer.parseInt(tftTelefono.getText()),tftCorreo.getText(),usuario)==true){
+						actualizarTabla();
+						lblAvisos.setText("Contacto añadido");
+						lblAvisos.setBackground(Color.GREEN);
+					}else{
+						
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}
 		}
 	}
@@ -318,7 +323,7 @@ public class InterfazUsuario extends JFrame {
 		@Override
 		public void windowActivated(WindowEvent arg0) {
 			try {
-				actualizarTabla();
+			//	actualizarTabla();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -385,13 +390,37 @@ public class InterfazUsuario extends JFrame {
 			tftTelefono.setBackground(new Color(250, 250, 250));
 		}
 	}
+	private class TablaContactosKeyListener extends KeyAdapter {
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			try {
+
+				limpiarCampos();
+				tftNombre.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 0).toString());
+				tftApellidos.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 1).toString());
+				tftDireccion.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 2).toString());
+				tftCorreo.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 3).toString());
+				tftTelefono.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 4).toString());
+			} catch (Exception e) {
+				//System.out.println("nova"+e.toString());
+			}
+		}
+	}
 
 	private void actualizarTabla() throws SQLException, Exception {
 		String[] nombreColumnas = { "Nombre", "Apellidos", "Direccion", "Correo", "Telefono" };
 
 		DefaultTableModel modeloTabla = new DefaultTableModel(nombreColumnas, 0);
 		tablaContactos = new JTable(modeloTabla);
-		
+		tablaContactos.addKeyListener(new TablaContactosKeyListener());
+		tablaContactos.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		tablaContactos.setMinimumSize(new Dimension(300, 0));
+		tablaContactos.setAlignmentY(Component.TOP_ALIGNMENT);
+		tablaContactos.setAlignmentX(Component.LEFT_ALIGNMENT);
+		tablaContactos.addMouseListener(new TablaContactosMouseListener());
+		tablaContactos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tablaContactos.setFillsViewportHeight(true);
+
 		Contacto contacto= new Contacto();
 		Vector<Contacto> contactos=contacto.leerContactos();
 		
@@ -401,10 +430,17 @@ public class InterfazUsuario extends JFrame {
 			Object[] data = { contactos.elementAt(i).getNombre(), contactos.elementAt(i).getApellidos(), contactos.elementAt(i).getDireccion(), contactos.elementAt(i).getCorreoE(), contactos.elementAt(i).getTelefono() };
 			modeloTabla.addRow(data);
 		}
-
+		
 		JScrollPane scrollPanel = new JScrollPane(tablaContactos, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		panelTabla.add(scrollPanel, BorderLayout.CENTER);
-
+	}
+	
+	private void limpiarCampos(){
+		tftNombre.setText(null);
+		tftApellidos.setText(null);
+		tftDireccion.setText(null);
+		tftCorreo.setText(null);
+		tftTelefono.setText(null);
 	}
 }
