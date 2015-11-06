@@ -26,7 +26,7 @@ public class Contacto {
 		Vector<Object> persona = gestorContacto.leer(nombre, apellidos, direccion, telefono, correoE);
 		return persona;
 	}
-
+//Ultimo cambio
 	// public int borrarContacto() {
 	// int i=gestorContacto.delete(persona)
 	//
