@@ -1,5 +1,6 @@
 package dominio;
 
+import java.sql.SQLException;
 import java.util.Vector;
 
 import persistencia.GestorContacto;
@@ -14,21 +15,32 @@ public class Contacto {
 	private GestorContacto gestorContacto;
 
 	public Contacto(String nombre, String apellidos, String direccion, int telefono, String correoE) {
-		super();
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.direccion = direccion;
 		this.telefono = telefono;
 		this.correoE = correoE;
+		this.gestorContacto=new GestorContacto();
+	}
+	
+	
+	public Contacto() {
+		this.nombre = null;
+		this.apellidos = null;
+		this.direccion = null;
+		this.telefono = 0;
+		this.correoE = null;
+		this.gestorContacto= new GestorContacto();
 	}
 
-	public Vector<Object> leerContacto() throws Exception {
-		Vector<Object> persona = gestorContacto.leer(nombre, apellidos, direccion, telefono, correoE);
-		return persona;
-	}
-//Ultimo cambio
+	// public Vector<Object> leerContacto() throws Exception {
+	// Vector<Object> persona = gestorContacto.leer(nombre, apellidos,
+	// direccion, telefono, correoE);
+	// return persona;
+	// }
+
 	// public int borrarContacto() {
-	// int i=gestorContacto.delete(persona)
+	// int i=gestorContacto.delete(nombre,apellidos);
 	//
 	// }
 	//
@@ -39,6 +51,12 @@ public class Contacto {
 	// public int eliminarContacto() {
 	//
 	// }
+
+	public Vector<Contacto> leerContactos() throws SQLException, Exception {
+		Vector<Contacto> contactos = gestorContacto.readAll();
+
+		return contactos;
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -80,4 +98,8 @@ public class Contacto {
 		this.correoE = correoE;
 	}
 
+	public String toString() {
+		return "Contacto [nombre=" + nombre + ", apellidos=" + apellidos + ", direccion=" + direccion + ", telefono="
+				+ telefono + ", correoE=" + correoE + ", gestorContacto=" + gestorContacto + "]";
+	}
 }

@@ -2,16 +2,13 @@ package presentacion;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-
 import dominio.Contacto;
-
 import java.awt.Toolkit;
 import javax.swing.BoxLayout;
 import javax.swing.JList;
@@ -28,7 +25,6 @@ import javax.swing.JScrollPane;
 import java.awt.FlowLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-
 import javax.swing.Box;
 import java.awt.Component;
 import javax.swing.ListSelectionModel;
@@ -48,6 +44,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.util.Vector;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -73,6 +71,7 @@ public class InterfazUsuario extends JFrame {
 	private JButton btnEliminarContacto;
 	private JTable tablaContactos;
 	private JLabel lblAvisos;
+	private JButton btnBuscarContacto;
 
 	/**
 	 * Launch the application.
@@ -94,8 +93,11 @@ public class InterfazUsuario extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * 
+	 * @throws Exception
+	 * @throws SQLException
 	 */
-	public InterfazUsuario() {
+	public InterfazUsuario() throws SQLException, Exception {
 		addWindowListener(new ThisWindowListener());
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(InterfazUsuario.class
@@ -206,6 +208,11 @@ public class InterfazUsuario extends JFrame {
 					btnEliminarContacto.addActionListener(new BtnEliminarContactoActionListener());
 					panelBotones.add(btnEliminarContacto);
 				}
+				{
+					btnBuscarContacto = new JButton("BUSCAR CONTACTO");
+					btnBuscarContacto.setToolTipText("Buscar contacto en la agenda");
+					panelBotones.add(btnBuscarContacto);
+				}
 			}
 			{
 				panelTabla = new JPanel();
@@ -214,30 +221,17 @@ public class InterfazUsuario extends JFrame {
 				panelTabla.setLayout(new BorderLayout(0, 0));
 				{
 					String[] nombreColumnas = { "Nombre", "Apellidos", "Direccion", "Correo", "Telefono" };
-					Object[][] data = {
-							{ "Cristian", "Trapero Mora", "Miguelturra", "critramo@gmail.com", "645123638" },
-
-					};
 
 					DefaultTableModel modeloTabla = new DefaultTableModel(nombreColumnas, 0);
 					tablaContactos = new JTable(modeloTabla);
-					tablaContactos.setMinimumSize(new Dimension(200, 0));
+					tablaContactos.setColumnSelectionAllowed(true);
+					tablaContactos.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+					tablaContactos.setMinimumSize(new Dimension(300, 0));
 					tablaContactos.setAlignmentY(Component.TOP_ALIGNMENT);
 					tablaContactos.setAlignmentX(Component.LEFT_ALIGNMENT);
 					tablaContactos.addMouseListener(new TablaContactosMouseListener());
 					tablaContactos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 					tablaContactos.setFillsViewportHeight(true);
-
-					// int[] anchos = {40, 200, 50,100,20};
-					// for(int i = 0; i < tablaContactos.getColumnCount(); i++)
-					// {
-					//
-					// tablaContactos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
-					//
-					// }
-
-					// Cargamos los datos de los contactos
-					Contacto contacto = null;
 
 					JScrollPane scrollPanel = new JScrollPane(tablaContactos, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 							JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -260,12 +254,15 @@ public class InterfazUsuario extends JFrame {
 	private class TablaContactosMouseListener extends MouseAdapter {
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			tftNombre.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 0).toString());
-			tftApellidos.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 1).toString());
-			tftDireccion.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 2).toString());
-			tftCorreo.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 3).toString());
-			tftTelefono.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 4).toString());
-
+			try {
+				tftNombre.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 0).toString());
+				tftApellidos.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 1).toString());
+				tftDireccion.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 2).toString());
+				tftCorreo.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 3).toString());
+				tftTelefono.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 4).toString());
+			} catch (Exception e) {
+				System.out.println(e.toString());
+			}
 		}
 	}
 
@@ -316,6 +313,16 @@ public class InterfazUsuario extends JFrame {
 			Login frame = new Login();
 			frame.setVisible(true);
 			frame.setLocationRelativeTo(null);
+		}
+
+		@Override
+		public void windowActivated(WindowEvent arg0) {
+			try {
+				actualizarTabla();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -377,5 +384,27 @@ public class InterfazUsuario extends JFrame {
 		public void focusLost(FocusEvent e) {
 			tftTelefono.setBackground(new Color(250, 250, 250));
 		}
+	}
+
+	private void actualizarTabla() throws SQLException, Exception {
+		String[] nombreColumnas = { "Nombre", "Apellidos", "Direccion", "Correo", "Telefono" };
+
+		DefaultTableModel modeloTabla = new DefaultTableModel(nombreColumnas, 0);
+		tablaContactos = new JTable(modeloTabla);
+		
+		Contacto contacto= new Contacto();
+		Vector<Contacto> contactos=contacto.leerContactos();
+		
+		
+		for (int i = 0; i < contactos.size(); i++) {
+			
+			Object[] data = { contactos.elementAt(i).getNombre(), contactos.elementAt(i).getApellidos(), contactos.elementAt(i).getDireccion(), contactos.elementAt(i).getCorreoE(), contactos.elementAt(i).getTelefono() };
+			modeloTabla.addRow(data);
+		}
+
+		JScrollPane scrollPanel = new JScrollPane(tablaContactos, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		panelTabla.add(scrollPanel, BorderLayout.CENTER);
+
 	}
 }

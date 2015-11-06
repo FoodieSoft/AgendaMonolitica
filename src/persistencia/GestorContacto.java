@@ -11,15 +11,17 @@ public class GestorContacto {
 	Contacto contacto;
 	LinkedList<Contacto> listaContactos;
 
-	public Vector<Object> leer(String nombre, String apellidos, String direccion, int telefono, String correoE)
-			throws Exception {
-
-		String sentencia = "SELECT * FROM CONTACTOS WHERE nombre='" + nombre + "' AND apellidos='" + apellidos
-				+ "' AND telefono='" + telefono + "';";
-		Vector<Object> contactos;
-		contactos = Agente.getAgente().leerSentenciaContactos(sentencia);
-		return contactos;
-	}
+	// public Vector<Object> leer(String nombre, String apellidos, String
+	// direccion, int telefono, String correoE)
+	// throws Exception {
+	//
+	// String sentencia = "SELECT * FROM CONTACTOS WHERE nombre='" + nombre + "'
+	// AND apellidos='" + apellidos
+	// + "' AND telefono='" + telefono + "';";
+	// Vector<Object> contactos;
+	// contactos = Agente.getAgente().leerSentenciaContactos(sentencia);
+	// return contactos;
+	// }
 
 	public int insert(Contacto persona) throws SQLException, Exception {
 		int i;
@@ -42,11 +44,18 @@ public class GestorContacto {
 		return i;
 	}
 
-	public Vector<Object> readAll(Contacto persona) throws SQLException, Exception {
+	public int search(Contacto persona) throws SQLException, Exception {
+		int i;
+		String sentencia = "";
+		i = Agente.getAgente().update(sentencia);
+		return i;
 
-		String sentencia = "SELECT * FROM CONTACTOS ORDER BY nombre";
-		Vector<Object> contactos;
-		contactos = Agente.getAgente().leerSentenciaContactos(sentencia);
+	}
+
+	public Vector<Contacto> readAll() throws SQLException, Exception {
+
+		String sentencia = "SELECT * FROM foodiesoft.contactos ORDER BY nombre, apellidos;";
+		Vector<Contacto> contactos = Agente.getAgente().leerSentenciaContactos(sentencia);
 		return contactos;
 	}
 

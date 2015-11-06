@@ -3,6 +3,8 @@ package persistencia;
 import java.sql.*;
 import java.util.Vector;
 
+import dominio.Contacto;
+
 public class Agente {
 
 	// Instancia del agente
@@ -87,23 +89,18 @@ public class Agente {
 		return contacto;
 	}
 
-	public Vector<Object> leerSentenciaContactos(String SQL) throws SQLException, Exception {
+	public Vector<Contacto> leerSentenciaContactos(String SQL) throws SQLException, Exception {
 		conectar();
 
 		Statement select = mBD.createStatement();
 		ResultSet s = select.executeQuery(SQL);
 
-		Vector<Object> contactos = new Vector<Object>();
+		Vector<Contacto> contactos = new Vector<Contacto>();
 
 		while (s.next()) {
-			Vector<Object> contacto = new Vector<Object>();
-			contacto.add(s.getString(1));
-			contacto.add(s.getString(2));
-			contacto.add(s.getString(3));
-			contacto.add(s.getInt(4));
-			contacto.add(s.getString(5));
-			contacto.add(s.getString(6));
-			contacto.add(s.getString(7));
+			Contacto contacto = new Contacto(s.getString(1), s.getString(2), s.getString(3), s.getInt(4),
+					s.getString(5));
+			// contacto.add(s.getString(6)); el codigo
 			contactos.add(contacto);
 		}
 
