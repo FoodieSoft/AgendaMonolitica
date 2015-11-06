@@ -11,7 +11,8 @@ public class GestorContacto {
 	Contacto contacto;
 	LinkedList<Contacto> listaContactos;
 
-	public Vector<Object> leer(String nombre, String apellidos, String direccion, int telefono, String correoE) throws Exception {
+	public Vector<Object> leer(String nombre, String apellidos, String direccion, int telefono, String correoE)
+			throws Exception {
 
 		String sentencia = "SELECT * FROM CONTACTOS WHERE nombre='" + nombre + "' AND apellidos='" + apellidos
 				+ "' AND telefono='" + telefono + "';";

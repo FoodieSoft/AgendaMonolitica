@@ -23,22 +23,22 @@ public class Contacto {
 	}
 
 	public Vector<Object> leerContacto() throws Exception {
-		Vector<Object> persona=gestorContacto.leer(nombre, apellidos, direccion, telefono, correoE);
+		Vector<Object> persona = gestorContacto.leer(nombre, apellidos, direccion, telefono, correoE);
 		return persona;
 	}
 
-//	public int borrarContacto() {
-//		int i=gestorContacto.delete(persona)
-//
-//	}
-//
-//	public int modificarContacto() {
-//
-//	}
-//
-//	public int eliminarContacto() {
-//
-//	}
+	// public int borrarContacto() {
+	// int i=gestorContacto.delete(persona)
+	//
+	// }
+	//
+	// public int modificarContacto() {
+	//
+	// }
+	//
+	// public int eliminarContacto() {
+	//
+	// }
 
 	public String getNombre() {
 		return nombre;

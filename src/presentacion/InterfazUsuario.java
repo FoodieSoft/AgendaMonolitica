@@ -235,9 +235,9 @@ public class InterfazUsuario extends JFrame {
 					// tablaContactos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
 					//
 					// }
-					
-					//Cargamos los datos de los contactos
-					Contacto contacto=null;
+
+					// Cargamos los datos de los contactos
+					Contacto contacto = null;
 
 					JScrollPane scrollPanel = new JScrollPane(tablaContactos, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 							JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
