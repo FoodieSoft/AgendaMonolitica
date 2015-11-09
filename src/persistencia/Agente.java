@@ -53,16 +53,16 @@ public class Agente {
 
 		Statement select = mBD.createStatement();
 		ResultSet s = select.executeQuery(SQL);
-		Vector<Object> contacto = new Vector<Object>();
+		Vector<Object> usuario = new Vector<Object>();
 
 		while (s.next()) {
-			contacto.add(s.getString(1));
-			contacto.add(s.getString(2));
+			usuario.add(s.getString(1));
+			usuario.add(s.getString(2));
 		}
 
 		select.close();
 		desconectar();
-		return contacto;
+		return usuario;
 	}
 
 	// Metodo para leer los contactos de la base de datos
