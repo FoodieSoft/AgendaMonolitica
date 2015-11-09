@@ -13,6 +13,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import dominio.GestorUsuario;
 import dominio.Usuario;
 import javax.swing.ImageIcon;
 import java.awt.Font;
@@ -90,18 +92,19 @@ public class Login extends JFrame {
 
 						// Creamos un usuario con un nombre y una contraseña
 						Usuario usuario = new Usuario(tftUsuario.getText(), tftContrasena.getText());
-
+						GestorUsuario gestorUsuario=new GestorUsuario();
+						
 						try {
 
 							// Buscamos ese usuario en la base de datos
-							if (usuario.autenticar() == true) {
+							if (gestorUsuario.autenticar(usuario) == true) {
 
 								// Creamos otra ventana con el gestor de
 								// contactos
 								InterfazGestor gestor = new InterfazGestor();
 								gestor.setVisible(true);
 								gestor.setLocationRelativeTo(null);
-								gestor.usuario = usuario;
+								gestor.usuario=usuario;
 
 								// Cerramos el login
 								frame.dispose();

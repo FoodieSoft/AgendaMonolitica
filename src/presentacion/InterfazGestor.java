@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import dominio.Contacto;
+import dominio.GestorContacto;
 import dominio.Usuario;
 import java.awt.Toolkit;
 import javax.swing.JTextField;
@@ -62,6 +63,7 @@ public class InterfazGestor extends JFrame {
 	private JLabel lblAvisos;
 	private JButton btnBuscarContacto;
 	public Usuario usuario;
+	private GestorContacto gestorContacto=new GestorContacto();
 
 	/**
 	 * Launch the application.
@@ -309,17 +311,18 @@ public class InterfazGestor extends JFrame {
 				lblAvisos.setBackground(Color.RED);
 
 			} else {
-				Contacto contacto = new Contacto();
-				try {
-
+							
+				try {	
 					int telefono = 0;
 
 					if (!tftTelefono.getText().isEmpty()) {
 						telefono = Integer.parseInt(tftTelefono.getText());
 					}
+					
+					Contacto contacto = new Contacto(tftNombre.getText(),tftApellidos.getText(),tftDireccion.getText(),telefono,tftCorreo.getText());
 
-					if (contacto.insertarContacto(tftNombre.getText(), tftApellidos.getText(), tftDireccion.getText(),
-							telefono, tftCorreo.getText(), usuario) == true) {
+
+					if (gestorContacto.añadir(contacto, usuario) == true) {
 						actualizarTabla();
 						lblAvisos.setText("Contacto añadido");
 						lblAvisos.setBackground(Color.GREEN);
@@ -344,7 +347,7 @@ public class InterfazGestor extends JFrame {
 				lblAvisos.setBackground(Color.RED);
 
 			} else {
-				Contacto contacto = new Contacto();
+				
 
 				try {
 					int telefono = 0;
@@ -352,9 +355,11 @@ public class InterfazGestor extends JFrame {
 					if (!tftTelefono.getText().isEmpty()) {
 						telefono = Integer.parseInt(tftTelefono.getText());
 					}
+					
+					Contacto contacto = new Contacto(tftNombre.getText(),tftApellidos.getText(),tftDireccion.getText(),telefono,tftCorreo.getText());
 
-					if (contacto.modificarContacto(tftNombre.getText(), tftApellidos.getText(), tftDireccion.getText(),
-							telefono, tftCorreo.getText(), usuario) == true) {
+
+					if (gestorContacto.modificar(contacto, usuario)== true) {
 						actualizarTabla();
 						lblAvisos.setText("Contacto modificado");
 						lblAvisos.setBackground(Color.GREEN);
@@ -363,6 +368,7 @@ public class InterfazGestor extends JFrame {
 					} else {
 
 					}
+					
 				} catch (Exception ex) {
 					// TODO Auto-generated catch block
 					lblAvisos.setText(ex.getLocalizedMessage());
@@ -380,7 +386,6 @@ public class InterfazGestor extends JFrame {
 				lblAvisos.setBackground(Color.RED);
 
 			} else {
-				Contacto contacto = new Contacto();
 
 				try {
 
@@ -388,12 +393,15 @@ public class InterfazGestor extends JFrame {
 							"¿Seguro que quieres eliminar el contacto?", "Eliminar contacto", JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null, null, null);
 
+					Contacto contacto = new Contacto(tftNombre.getText(),tftApellidos.getText(),null,0,null);
+
 					if (eleccion == 0) {
-						if (contacto.eliminarContacto(tftNombre.getText(), tftApellidos.getText(), usuario) == true) {
-							actualizarTabla();
+						if (gestorContacto.eliminar(contacto,usuario) == true) {
+							
 							lblAvisos.setText("Contacto eliminado");
 							lblAvisos.setBackground(Color.GREEN);
 							limpiarCampos();
+							actualizarTabla();
 
 						} else {
 							lblAvisos.setText("Contacto no eliminado");
@@ -417,21 +425,20 @@ public class InterfazGestor extends JFrame {
 				lblAvisos.setBackground(Color.RED);
 
 			} else {
-				Contacto contacto = new Contacto();
+				Contacto contacto = new Contacto(tftNombre.getText(), tftApellidos.getText(), null, 0, null);
 
 				try {
 
-					Vector<Contacto> contactoBuscar = contacto.buscarContacto(tftNombre.getText(),
-							tftApellidos.getText(), usuario);
-
-					if (contactoBuscar.size() != 0) {
+					Contacto contactoBuscado=gestorContacto.buscar(contacto, usuario);
+					
+					if (contactoBuscado!=null) {
 						actualizarTabla();
 						lblAvisos.setText("Contacto encontrado");
 						lblAvisos.setBackground(Color.GREEN);
 
-						tftDireccion.setText(contactoBuscar.elementAt(0).getDireccion());
-						tftTelefono.setText(Integer.toString(contactoBuscar.elementAt(0).getTelefono()));
-						tftCorreo.setText(contactoBuscar.elementAt(0).getCorreoE());
+						tftDireccion.setText(contactoBuscado.getDireccion());
+						tftTelefono.setText(Integer.toString(contactoBuscado.getTelefono()));
+						tftCorreo.setText(contactoBuscado.getCorreoE());
 
 					} else {
 						lblAvisos.setText("Contacto no encontrado");
@@ -471,8 +478,7 @@ public class InterfazGestor extends JFrame {
 			}
 		};
 
-		Contacto contacto = new Contacto();
-		Vector<Contacto> contactos = contacto.leerContactos(usuario);
+		Vector<Contacto> contactos = gestorContacto.leerContactos(usuario);
 
 		for (int i = 0; i < contactos.size(); i++) {
 
