@@ -19,7 +19,6 @@ import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-
 public class Login extends JFrame {
 
 	private static Login frame;
@@ -179,7 +178,7 @@ public class Login extends JFrame {
 			tftContrasena.requestFocus();
 		}
 	}
-	
+
 	private class TftContrasenaActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			btnAceptar.requestFocus();
@@ -197,5 +196,5 @@ public class Login extends JFrame {
 			e.getComponent().setBackground(new Color(250, 250, 250));
 		}
 	}
-	
+
 }

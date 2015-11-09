@@ -8,8 +8,8 @@ import dominio.Usuario;
 public class GestorContacto {
 
 	// Inserta un contacto en la base de datos
-	public int insert(String nombre, String apellidos, String direccion, int telefono, String correoE,
-			Usuario usuario) throws SQLException, Exception {
+	public int insert(String nombre, String apellidos, String direccion, int telefono, String correoE, Usuario usuario)
+			throws SQLException, Exception {
 		int i;
 
 		String sentencia = "INSERT INTO foodiesoft.CONTACTOS (nombre,apellidos,direccion,telefono,correo,codigo) VALUES('"
@@ -21,8 +21,8 @@ public class GestorContacto {
 	}
 
 	// Actualiza los datos de un contacto
-	public int update(String nombre, String apellidos, String direccion, int telefono, String correoE,
-			Usuario usuario) throws SQLException, Exception {
+	public int update(String nombre, String apellidos, String direccion, int telefono, String correoE, Usuario usuario)
+			throws SQLException, Exception {
 		int i;
 		String sentencia = "UPDATE foodiesoft.CONTACTOS SET direccion='" + direccion + "', telefono=" + telefono
 				+ " , correo='" + correoE + "' WHERE nombre='" + nombre + "' AND apellidos='" + apellidos
@@ -52,7 +52,8 @@ public class GestorContacto {
 	// Recupera todos los contactos de la base de datos para un usuario
 	public Vector<Contacto> readAll(Usuario usuario) throws SQLException, Exception {
 
-		String sentencia = "SELECT * FROM foodiesoft.contactos WHERE codigo='"+usuario.getid()+"' ORDER BY nombre, apellidos;";
+		String sentencia = "SELECT * FROM foodiesoft.contactos WHERE codigo='" + usuario.getid()
+				+ "' ORDER BY nombre, apellidos;";
 		Vector<Contacto> contactos = Agente.getAgente().leerContactos(sentencia);
 		return contactos;
 	}

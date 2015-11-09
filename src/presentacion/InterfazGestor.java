@@ -264,9 +264,9 @@ public class InterfazGestor extends JFrame {
 		public void windowClosing(WindowEvent e) {
 			String[] valores = { "Abrir login", "Salir" };
 			int eleccion = JOptionPane.showOptionDialog(frameGestor,
-					"¿Desea abrir el login de nuevo o salir de la aplicacion?", "Salir de la aplicacion", JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE, null, valores, valores[1]);
-			if(eleccion==0){
+					"¿Desea abrir el login de nuevo o salir de la aplicacion?", "Salir de la aplicacion",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, valores, valores[1]);
+			if (eleccion == 0) {
 				Login login = new Login();
 				login.setVisible(true);
 				login.setLocationRelativeTo(null);
