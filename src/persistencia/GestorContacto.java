@@ -1,73 +1,59 @@
 package persistencia;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.Vector;
-
 import dominio.Contacto;
 import dominio.Usuario;
 
 public class GestorContacto {
-	Agente agente;
-	Contacto contacto;
-	LinkedList<Contacto> listaContactos;
 
-	// public Vector<Object> leer(String nombre, String apellidos, String
-	// direccion, int telefono, String correoE)
-	// throws Exception {
-	//
-	// String sentencia = "SELECT * FROM CONTACTOS WHERE nombre='" + nombre + "'
-	// AND apellidos='" + apellidos
-	// + "' AND telefono='" + telefono + "';";
-	// Vector<Object> contactos;
-	// contactos = Agente.getAgente().leerSentenciaContactos(sentencia);
-	// return contactos;
-	// }
-
-	public int insert(String nombre,String apellidos,String direccion, int telefono,String correoE, Usuario usuario) throws SQLException, Exception {
+	// Inserta un contacto en la base de datos
+	public int insert(String nombre, String apellidos, String direccion, int telefono, String correoE,
+			Usuario usuario) throws SQLException, Exception {
 		int i;
-		if(direccion==""){
-			direccion=null;
-		}
-//		if(telefono==' '){
-//			telefono=00000;
-//		}
-		if(correoE==""){
-			correoE=null;
-		}
-String sentencia = 
-		"INSERT INTO foodiesoft.CONTACTOS(nombre,apellidos,direccion,telefono,correo,codigo) VALUES('"+nombre+"','"+apellidos+"','"+direccion+"',"+telefono+",'"+correoE+"','"+usuario.getid()+"');";
-		
+
+		String sentencia = "INSERT INTO foodiesoft.CONTACTOS (nombre,apellidos,direccion,telefono,correo,codigo) VALUES('"
+				+ nombre + "','" + apellidos + "','" + direccion + "'," + telefono + ",'" + correoE + "','"
+				+ usuario.getid() + "');";
+
 		i = Agente.getAgente().update(sentencia);
 		return i;
 	}
 
-	public int update(Contacto persona) throws SQLException, Exception {
+	// Actualiza los datos de un contacto
+	public int update(String nombre, String apellidos, String direccion, int telefono, String correoE,
+			Usuario usuario) throws SQLException, Exception {
 		int i;
-		String sentencia = "";
+		String sentencia = "UPDATE foodiesoft.CONTACTOS SET direccion='" + direccion + "', telefono=" + telefono
+				+ " , correo='" + correoE + "' WHERE nombre='" + nombre + "' AND apellidos='" + apellidos
+				+ "' AND codigo='" + usuario.getid() + "';";
 		i = Agente.getAgente().update(sentencia);
 		return i;
 	}
 
-	public int delete(Contacto persona) throws SQLException, Exception {
+	// Elimina un contacto de la base de datos
+	public int delete(String nombre, String apellidos, Usuario usuario) throws SQLException, Exception {
 		int i;
-		String sentencia = "";
+		String sentencia = "DELETE FROM foodiesoft.contactos WHERE nombre='" + nombre + "' AND apellidos='" + apellidos
+				+ "' AND codigo='" + usuario.getid() + "';";
 		i = Agente.getAgente().update(sentencia);
 		return i;
 	}
 
-	public int search(Contacto persona) throws SQLException, Exception {
-		int i;
-		String sentencia = "";
-		i = Agente.getAgente().update(sentencia);
-		return i;
+	// Recupera un contacto de la base de datos
+	public Vector<Contacto> read(String nombre, String apellidos, Usuario usuario) throws SQLException, Exception {
 
+		String sentencia = "SELECT * FROM foodiesoft.contactos WHERE nombre='" + nombre + "' AND apellidos='"
+				+ apellidos + "' AND codigo='" + usuario.getid() + "';";
+		Vector<Contacto> contactos = Agente.getAgente().leerContactos(sentencia);
+		return contactos;
 	}
 
-	public Vector<Contacto> readAll() throws SQLException, Exception {
+	// Recupera todos los contactos de la base de datos para un usuario
+	public Vector<Contacto> readAll(Usuario usuario) throws SQLException, Exception {
 
-		String sentencia = "SELECT * FROM foodiesoft.contactos ORDER BY nombre, apellidos;";
-		Vector<Contacto> contactos = Agente.getAgente().leerSentenciaContactos(sentencia);
+		String sentencia = "SELECT * FROM foodiesoft.contactos WHERE codigo='"+usuario.getid()+"' ORDER BY nombre, apellidos;";
+		Vector<Contacto> contactos = Agente.getAgente().leerContactos(sentencia);
 		return contactos;
 	}
 

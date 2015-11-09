@@ -14,14 +14,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import dominio.Usuario;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-@SuppressWarnings("serial")
 public class Login extends JFrame {
 
 	private static Login frame = new Login();
@@ -61,7 +58,7 @@ public class Login extends JFrame {
 				Login.class.getResource("/com/sun/javafx/scene/control/skin/caspian/dialog-more-details.png")));
 		setTitle("Agenda - Login");
 		setResizable(false);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 472, 288);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -71,7 +68,7 @@ public class Login extends JFrame {
 			tftUsuario.addFocusListener(new TftUsuarioFocusListener());
 			tftUsuario.addActionListener(new TftUsuarioActionListener());
 			tftUsuario.setToolTipText("Introducir el usuario para acceder a la agenda");
-			tftUsuario.setBounds(251, 65, 163, 22);
+			tftUsuario.setBounds(259, 48, 164, 22);
 			contentPane.add(tftUsuario);
 			tftUsuario.setColumns(10);
 		}
@@ -85,7 +82,7 @@ public class Login extends JFrame {
 					// Comprobamos que los campos id y contraseña no esten
 					// vacios
 					if (String.valueOf(tftContrasena.getPassword()).isEmpty() || tftUsuario.getText().isEmpty()) {
-						lblInfo.setText("Introduccir usuario y contraseña");
+						lblInfo.setText("Introduzca su usuario y contraseña");
 						lblInfo.setBackground(Color.RED);
 
 					} else {
@@ -95,27 +92,28 @@ public class Login extends JFrame {
 
 						try {
 
-							// Leemos el usuario en la base de datos
+							// Buscamos ese usuario en la base de datos
 							if (usuario.autenticar() == true) {
 
-								// Creamos otra ventana con el gestor
-								InterfazUsuario gestor = new InterfazUsuario();
+								// Creamos otra ventana con el gestor de
+								// contactos
+								InterfazGestor gestor = new InterfazGestor();
 								gestor.setVisible(true);
 								gestor.setLocationRelativeTo(null);
-								gestor.usuario=usuario;
-								
+								gestor.usuario = usuario;
+
 								// Cerramos el login
 								frame.dispose();
 
 							} else {
 
-								lblInfo.setText("Usuario o contraseña incorrecta.");
+								lblInfo.setText("Usuario o contraseña incorrecta");
 								lblInfo.setBackground(Color.RED);
 
 							}
 
 						} catch (Exception e) {
-							lblInfo.setText("Usuario o contraseña incorrecta.");
+							lblInfo.setText("Usuario o contraseña incorrecta");
 							lblInfo.setBackground(Color.RED);
 							System.out.println(e.getMessage());
 						}
@@ -123,7 +121,7 @@ public class Login extends JFrame {
 					}
 				}
 			});
-			btnAceptar.setBounds(167, 195, 109, 37);
+			btnAceptar.setBounds(165, 192, 120, 40);
 			contentPane.add(btnAceptar);
 		}
 		{
@@ -134,24 +132,26 @@ public class Login extends JFrame {
 					System.exit(0);
 				}
 			});
-			btnCancelar.setBounds(305, 195, 109, 37);
+			btnCancelar.setBounds(303, 192, 120, 40);
 			contentPane.add(btnCancelar);
 		}
 		{
 			lblUsuario = new JLabel("Usuario");
-			lblUsuario.setBounds(167, 68, 56, 16);
+			lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			lblUsuario.setBounds(191, 50, 56, 16);
 			contentPane.add(lblUsuario);
 		}
 		{
 			lblContrasena = new JLabel("Contrase\u00F1a");
-			lblContrasena.setBounds(167, 113, 72, 16);
+			lblContrasena.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			lblContrasena.setBounds(165, 103, 82, 16);
 			contentPane.add(lblContrasena);
 		}
 		{
 			tftContrasena = new JPasswordField();
 			tftContrasena.addFocusListener(new TftContrasenaFocusListener());
 			tftContrasena.setToolTipText("Introducir la contrase\u00F1a para acceder a la agenda");
-			tftContrasena.setBounds(251, 110, 163, 22);
+			tftContrasena.setBounds(259, 101, 164, 22);
 			contentPane.add(tftContrasena);
 		}
 		{
@@ -159,14 +159,14 @@ public class Login extends JFrame {
 			lblInfo.setFont(new Font("Tahoma", Font.BOLD, 14));
 			lblInfo.setHorizontalAlignment(SwingConstants.CENTER);
 			lblInfo.setOpaque(true);
-			lblInfo.setBounds(167, 142, 247, 40);
+			lblInfo.setBounds(165, 139, 258, 40);
 			contentPane.add(lblInfo);
 		}
 		{
 			lblLogo = new JLabel("");
 			lblLogo.setToolTipText("Aplicacion creada por FoodieSoft");
 			lblLogo.setIcon(new ImageIcon(Login.class.getResource("/presentacion/logo.png")));
-			lblLogo.setBounds(12, 13, 138, 182);
+			lblLogo.setBounds(12, 13, 158, 182);
 			contentPane.add(lblLogo);
 		}
 	}

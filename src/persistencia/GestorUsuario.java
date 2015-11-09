@@ -14,7 +14,7 @@ public class GestorUsuario {
 		String sentencia = "SELECT * FROM foodiesoft.usuarios WHERE id_usuario='" + id + "' AND password='" + password
 				+ "';";
 
-		Vector<Object> aux = Agente.getAgente().leerSentencia(sentencia);
+		Vector<Object> aux = Agente.getAgente().leerUsuario(sentencia);
 
 		if (aux.size() != 0) {
 			usuario = new Usuario(aux.elementAt(0).toString(), aux.elementAt(1).toString());
