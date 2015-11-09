@@ -5,44 +5,28 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import dominio.Contacto;
 import dominio.Usuario;
 import java.awt.Toolkit;
-import javax.swing.BoxLayout;
-import javax.swing.JList;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JButton;
-import javax.swing.JDesktopPane;
-import javax.swing.JSplitPane;
-import javax.swing.JToolBar;
 import javax.swing.JScrollPane;
 import java.awt.FlowLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
-import javax.swing.Box;
 import java.awt.Component;
+
 import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.SystemColor;
-import javax.swing.AbstractListModel;
-import javax.swing.JTree;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JPopupMenu;
-import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -52,10 +36,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.border.TitledBorder;
-import javax.swing.DropMode;
 
 public class InterfazGestor extends JFrame {
 
+	private static InterfazGestor frameGestor;
 	private JPanel contentPane;
 	private JPanel panel;
 	private JPanel panelDatos;
@@ -86,9 +70,9 @@ public class InterfazGestor extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					InterfazGestor frame = new InterfazGestor();
-					frame.setVisible(true);
-					frame.setLocationRelativeTo(null);
+					frameGestor = new InterfazGestor();
+					frameGestor.setVisible(true);
+					frameGestor.setLocationRelativeTo(null);
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -154,7 +138,7 @@ public class InterfazGestor extends JFrame {
 				}
 				{
 					tftNombre = new JTextField();
-					tftNombre.addFocusListener(new TftNombreFocusListener());
+					tftNombre.addFocusListener(new MiFocusListener());
 					tftNombre.setToolTipText("Nombre del contacto");
 					tftNombre.setBounds(78, 13, 172, 22);
 					panelDatos.add(tftNombre);
@@ -162,7 +146,7 @@ public class InterfazGestor extends JFrame {
 				}
 				{
 					tftApellidos = new JTextField();
-					tftApellidos.addFocusListener(new TftApellidosFocusListener());
+					tftApellidos.addFocusListener(new MiFocusListener());
 					tftApellidos.setToolTipText("Apellidos del contacto");
 					tftApellidos.setBounds(78, 91, 172, 22);
 					panelDatos.add(tftApellidos);
@@ -170,7 +154,7 @@ public class InterfazGestor extends JFrame {
 				}
 				{
 					tftDireccion = new JTextField();
-					tftDireccion.addFocusListener(new TftDireccionFocusListener());
+					tftDireccion.addFocusListener(new MiFocusListener());
 					tftDireccion.setToolTipText("Direccion del contacto");
 					tftDireccion.setBounds(78, 171, 172, 22);
 					panelDatos.add(tftDireccion);
@@ -178,7 +162,7 @@ public class InterfazGestor extends JFrame {
 				}
 				{
 					tftCorreo = new JTextField();
-					tftCorreo.addFocusListener(new TftCorreoFocusListener());
+					tftCorreo.addFocusListener(new MiFocusListener());
 					tftCorreo.setToolTipText("Correo electronico del contacto");
 					tftCorreo.setBounds(78, 250, 172, 22);
 					panelDatos.add(tftCorreo);
@@ -186,7 +170,7 @@ public class InterfazGestor extends JFrame {
 				}
 				{
 					tftTelefono = new JTextField();
-					tftTelefono.addFocusListener(new TftTelefonoFocusListener());
+					tftTelefono.addFocusListener(new MiFocusListener());
 					tftTelefono.setToolTipText("Telefono del contacto");
 					tftTelefono.setBounds(78, 320, 134, 22);
 					panelDatos.add(tftTelefono);
@@ -201,16 +185,21 @@ public class InterfazGestor extends JFrame {
 				{
 					String[] nombreColumnas = { "Nombre", "Apellidos", "Direccion", "Correo", "Telefono" };
 
-					DefaultTableModel modeloTabla = new DefaultTableModel(nombreColumnas, 0);
+					DefaultTableModel modeloTabla = new DefaultTableModel(nombreColumnas, 0) {
+						@Override
+						public boolean isCellEditable(int row, int column) {
+							// celdas no editables
+							return false;
+						}
+					};
 
 					tablaContactos = new JTable(modeloTabla);
-					tablaContactos.addKeyListener(new TablaContactosKeyListener());
+					tablaContactos.addKeyListener(new TablaContactosKeyListener_1());
 					tablaContactos.addMouseListener(new TablaContactosMouseListener_1());
-					tablaContactos.setShowHorizontalLines(false);
+					tablaContactos.setAlignmentY(Component.TOP_ALIGNMENT);
+					tablaContactos.setAlignmentX(Component.LEFT_ALIGNMENT);
 					tablaContactos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-					tablaContactos.setFocusable(false);
-					tablaContactos.setFocusTraversalKeysEnabled(false);
-					tablaContactos.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+					tablaContactos.setFillsViewportHeight(true);
 
 					JScrollPane scrollPanel = new JScrollPane(tablaContactos, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 							JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -260,32 +249,7 @@ public class InterfazGestor extends JFrame {
 		}
 	}
 
-	private class TablaContactosMouseListener extends MouseAdapter {
-		@Override
-		public void mouseClicked(MouseEvent arg0) {
-
-			try {
-
-				limpiarCampos();
-				tftNombre.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 0).toString());
-				tftApellidos.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 1).toString());
-				tftDireccion.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 2).toString());
-				tftCorreo.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 3).toString());
-				tftTelefono.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 4).toString());
-			} catch (Exception e) {
-				// System.out.println("nova"+e.toString());
-			}
-		}
-	}
-
 	private class ThisWindowListener extends WindowAdapter {
-		@Override
-		public void windowClosing(WindowEvent arg0) {
-			// Login frame = new Login();
-			// frame.setVisible(true);
-			// frame.setLocationRelativeTo(null);
-		}
-
 		@Override
 		public void windowActivated(WindowEvent arg0) {
 			try {
@@ -295,91 +259,46 @@ public class InterfazGestor extends JFrame {
 				e.printStackTrace();
 			}
 		}
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			String[] valores = { "Abrir login", "Salir" };
+			int eleccion = JOptionPane.showOptionDialog(frameGestor,
+					"¿Desea abrir el login de nuevo o salir de la aplicacion?", "Salir de la aplicacion", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, valores, valores[1]);
+			if(eleccion==0){
+				Login login = new Login();
+				login.setVisible(true);
+				login.setLocationRelativeTo(null);
+			}
+		}
 	}
 
-	private class TftNombreFocusListener extends FocusAdapter {
+	private class MiFocusListener extends FocusAdapter {
 		@Override
 		public void focusGained(FocusEvent e) {
-			tftNombre.setBackground(new Color(250, 250, 210));
+			e.getComponent().setBackground(new Color(250, 250, 210));
 		}
 
 		@Override
 		public void focusLost(FocusEvent e) {
-			tftNombre.setBackground(new Color(250, 250, 250));
-		}
-	}
-
-	private class TftApellidosFocusListener extends FocusAdapter {
-		@Override
-		public void focusGained(FocusEvent e) {
-			tftApellidos.setBackground(new Color(250, 250, 210));
-		}
-
-		@Override
-		public void focusLost(FocusEvent e) {
-			tftApellidos.setBackground(new Color(250, 250, 250));
-		}
-	}
-
-	private class TftDireccionFocusListener extends FocusAdapter {
-		@Override
-		public void focusGained(FocusEvent e) {
-			tftDireccion.setBackground(new Color(250, 250, 210));
-		}
-
-		@Override
-		public void focusLost(FocusEvent e) {
-			tftDireccion.setBackground(new Color(250, 250, 250));
-		}
-	}
-
-	private class TftCorreoFocusListener extends FocusAdapter {
-		@Override
-		public void focusGained(FocusEvent e) {
-			tftCorreo.setBackground(new Color(250, 250, 210));
-		}
-
-		@Override
-		public void focusLost(FocusEvent e) {
-			tftCorreo.setBackground(new Color(250, 250, 250));
-		}
-	}
-
-	private class TftTelefonoFocusListener extends FocusAdapter {
-		@Override
-		public void focusGained(FocusEvent e) {
-			tftTelefono.setBackground(new Color(250, 250, 210));
-		}
-
-		@Override
-		public void focusLost(FocusEvent e) {
-			tftTelefono.setBackground(new Color(250, 250, 250));
+			e.getComponent().setBackground(new Color(250, 250, 250));
 		}
 	}
 
 	private class TablaContactosMouseListener_1 extends MouseAdapter {
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
+			try {
+				limpiarCampos();
+				tftNombre.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 0).toString());
+				tftApellidos.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 1).toString());
+				tftDireccion.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 2).toString());
+				tftCorreo.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 3).toString());
+				tftTelefono.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 4).toString());
+			} catch (Exception e) {
 
-			limpiarCampos();
-			tftNombre.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 0).toString());
-			tftApellidos.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 1).toString());
-			tftDireccion.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 2).toString());
-			tftCorreo.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 3).toString());
-			tftTelefono.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 4).toString());
-		}
-	}
-
-	private class TablaContactosKeyListener extends KeyAdapter {
-		@Override
-		public void keyTyped(KeyEvent e) {
-
-			limpiarCampos();
-			tftNombre.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 0).toString());
-			tftApellidos.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 1).toString());
-			tftDireccion.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 2).toString());
-			tftCorreo.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 3).toString());
-			tftTelefono.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 4).toString());
+			}
 		}
 	}
 
@@ -392,11 +311,11 @@ public class InterfazGestor extends JFrame {
 			} else {
 				Contacto contacto = new Contacto();
 				try {
-					
-					int telefono=0;
-					
-					if(!tftTelefono.getText().isEmpty()){
-						telefono=Integer.parseInt(tftTelefono.getText());
+
+					int telefono = 0;
+
+					if (!tftTelefono.getText().isEmpty()) {
+						telefono = Integer.parseInt(tftTelefono.getText());
 					}
 
 					if (contacto.insertarContacto(tftNombre.getText(), tftApellidos.getText(), tftDireccion.getText(),
@@ -404,7 +323,7 @@ public class InterfazGestor extends JFrame {
 						actualizarTabla();
 						lblAvisos.setText("Contacto añadido");
 						lblAvisos.setBackground(Color.GREEN);
-						//limpiarCampos();
+						// limpiarCampos();
 					} else {
 
 					}
@@ -428,10 +347,10 @@ public class InterfazGestor extends JFrame {
 				Contacto contacto = new Contacto();
 
 				try {
-					int telefono=0;
-					
-					if(!tftTelefono.getText().isEmpty()){
-						telefono=Integer.parseInt(tftTelefono.getText());
+					int telefono = 0;
+
+					if (!tftTelefono.getText().isEmpty()) {
+						telefono = Integer.parseInt(tftTelefono.getText());
 					}
 
 					if (contacto.modificarContacto(tftNombre.getText(), tftApellidos.getText(), tftDireccion.getText(),
@@ -439,7 +358,7 @@ public class InterfazGestor extends JFrame {
 						actualizarTabla();
 						lblAvisos.setText("Contacto modificado");
 						lblAvisos.setBackground(Color.GREEN);
-						//limpiarCampos();
+						// limpiarCampos();
 
 					} else {
 
@@ -465,14 +384,22 @@ public class InterfazGestor extends JFrame {
 
 				try {
 
-					if (contacto.eliminarContacto(tftNombre.getText(), tftApellidos.getText(), usuario) == true) {
-						actualizarTabla();
-						lblAvisos.setText("Contacto eliminado");
-						lblAvisos.setBackground(Color.GREEN);
-						limpiarCampos();
+					int eleccion = JOptionPane.showOptionDialog(frameGestor,
+							"¿Seguro que quieres eliminar el contacto?", "Eliminar contacto", JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, null, null);
 
-					} else {
+					if (eleccion == 0) {
+						if (contacto.eliminarContacto(tftNombre.getText(), tftApellidos.getText(), usuario) == true) {
+							actualizarTabla();
+							lblAvisos.setText("Contacto eliminado");
+							lblAvisos.setBackground(Color.GREEN);
+							limpiarCampos();
 
+						} else {
+							lblAvisos.setText("Contacto no eliminado");
+							lblAvisos.setBackground(Color.RED);
+
+						}
 					}
 				} catch (Exception ex) {
 					// TODO Auto-generated catch block
@@ -494,7 +421,8 @@ public class InterfazGestor extends JFrame {
 
 				try {
 
-					Vector<Contacto> contactoBuscar = contacto.buscarContacto(tftNombre.getText(), tftApellidos.getText(), usuario);
+					Vector<Contacto> contactoBuscar = contacto.buscarContacto(tftNombre.getText(),
+							tftApellidos.getText(), usuario);
 
 					if (contactoBuscar.size() != 0) {
 						actualizarTabla();
@@ -519,10 +447,29 @@ public class InterfazGestor extends JFrame {
 		}
 	}
 
+	private class TablaContactosKeyListener_1 extends KeyAdapter {
+		@Override
+		public void keyReleased(KeyEvent e) {
+			limpiarCampos();
+			tftNombre.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 0).toString());
+			tftApellidos.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 1).toString());
+			tftDireccion.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 2).toString());
+			tftCorreo.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 3).toString());
+			tftTelefono.setText(tablaContactos.getValueAt(tablaContactos.getSelectedRow(), 4).toString());
+		}
+	}
+
 	private void actualizarTabla() throws SQLException, Exception {
 
 		String[] nombreColumnas = { "Nombre", "Apellidos", "Direccion", "Correo", "Telefono" };
-		DefaultTableModel modeloTabla = new DefaultTableModel(nombreColumnas, 0);
+		@SuppressWarnings("serial")
+		DefaultTableModel modeloTabla = new DefaultTableModel(nombreColumnas, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				// celdas no editables
+				return false;
+			}
+		};
 
 		Contacto contacto = new Contacto();
 		Vector<Contacto> contactos = contacto.leerContactos(usuario);
