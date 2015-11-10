@@ -1,6 +1,6 @@
 package dominio;
 
-public class Contacto {
+public final class Contacto {
 
 	private String nombre;
 	private String apellidos;

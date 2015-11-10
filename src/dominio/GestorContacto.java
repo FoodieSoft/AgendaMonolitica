@@ -35,7 +35,7 @@ public class GestorContacto {
 	
 	public Vector<Contacto> leerContactos(Usuario usuario) throws SQLException, Exception{
 		Vector<Contacto> contactos=null;
-		GestorLectorContactos gestorLector=new GestorLectorContactos();
+		GestorLectorContacto gestorLector=new GestorLectorContacto();
 		contactos=gestorLector.leerTodos(usuario);
 		return contactos;
 	}

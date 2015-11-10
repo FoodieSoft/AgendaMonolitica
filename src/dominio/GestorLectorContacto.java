@@ -5,7 +5,7 @@ import java.util.Vector;
 
 import persistencia.ContactoDAO;
 
-public class GestorLectorContactos {
+public class GestorLectorContacto {
 
 	public Vector<Contacto> leerTodos(Usuario usuario) throws SQLException, Exception{
 		Vector<Contacto> contactos=null;
